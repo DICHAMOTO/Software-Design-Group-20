@@ -11,14 +11,16 @@
           <th>Total Amount Due</th>
           <th>Quote Created Date</th>
         </tr>
-        <tr>
-          <td>Sheila W Koga</td>
-          <td>5000</td>
-          <td>1989 Scenic Way, Champaign, Illinois(IL), 61820</td>
-          <td>03-01-2021</td>
-          <td>$2.05</td>
-          <td>$10250</td>
-          <td>02-23-2021</td>
-        </tr>
+        {% for history in histories %}
+            <tr>
+            <td>{{ history.client_name }}</td>
+            <td>{{ history.gallons_requested }}</td>
+            <td>{{ history.delivery_address }}</td>
+            <td>{{ history.delivery_date }}</td>
+            <td>{{ history.suggested_pice }}</td>
+            <td>{{ history.total_amount }}</td>
+            <td>{{ history.quote_created }}</td>
+            </tr>
+        {% endfor %}
       </table> 
 {% endblock content %}
