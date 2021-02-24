@@ -58,7 +58,7 @@ def register():
 	# the profile management page so they can fill out account information
 	if form.validate_on_submit():
 		flash(f'Account created for {form.username.data}!', 'success')
-		return redirect(url_for('profileManagement'))
+		return redirect(url_for('login'))
 	return render_template('register.html', title = 'Register', form = form)
 
 # Method for the login page
@@ -75,7 +75,7 @@ def login():
 		# login functionality. Will be deleted in future.
 		if form.username.data == 'moto' and form.password.data == 'testing':
 			flash(f'You have been logged in! Welcome {form.username.data}!', 'success')
-			return redirect(url_for('home'))
+			return redirect(url_for('profileManagement'))
 		else:
 			flash(f'Login Unsuccessful. Please check username or password.' ,'danger')
 	return render_template('login.html', title = 'Login', form = form)
