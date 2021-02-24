@@ -1,5 +1,5 @@
 from flask_wtf import FlaskForm
-from wtforms import validators, StringField, PasswordField, SubmitField, BooleanField, IntegerField
+from wtforms import validators, StringField, PasswordField, SubmitField, BooleanField, SelectField
 from wtforms.validators import DataRequired, Length, EqualTo, ValidationError
 
 # Code for the registration form that users will fill out if they want to 
@@ -68,6 +68,20 @@ class AccountInfoForm(FlaskForm):
     # This field is mandatory to fill out otherwise it will throw an error
     city = StringField('City',
         validators = [DataRequired(), Length(max = 100)])
+    # Have user select the state they live in. This field is going to be 
+    # filled with dummy data at the moment, but will be filled with 
+    # database query values when the backend is implemented. 
+    state = SelectField('State', 
+        choices = ['Alabama', 'Alaska', 'Arizona', 'Arkansas', 
+        'California', 'Colorado', 'Connecticut', 'Delaware', 'Florida',
+        'Georgia', 'Hawaii', 'Idaho', 'Illinois', 'Kansas', 'Kentucky', 
+        'Louisiana', 'Maine', 'Maryland', 'Massachusetts', 'Michigan',
+        'Minnesota', 'Mississippi', 'Missouri', 'Montana', 'Nebraska',
+        'Nebraska', 'Nevada', 'New Hampshire', 'New Jersey', 'New Mexico',
+        'New York', 'North Carolina', 'North Dakota', 'Ohio', 'Oklahoma',
+        'Oregon', 'Pennsylvania', 'Rhode Island', 'South Carolina', 
+        'Tennessee', 'Texas', 'Utah', 'Vermont', 'Virginia', 'Washington',
+        'West Virginia', 'Wisconson', 'Wyoming'])
     # Have user enter their zip code. This field is mandatory and only
     # accepts numerical values between 5 and 9 characters.
     zipCode = StringField('Zip Code', 

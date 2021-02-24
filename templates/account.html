@@ -73,6 +73,21 @@
                         {{ form.city(class="form-control form-control-lg") }}
                     {% endif %}
                 </div>
+                <div class = "form-group">
+                    <!-- City Field -->
+                    {{ form.state.label(class="form-control-label") }}
+                    <!-- Create conditional statements for errors -->
+                    {% if form.state.errors %}
+                        {{ form.state(class="form-control form-control-lg is-invalid") }}
+                        <div class = "invalid-feedback">
+                            {% for error in form.state.errors %}
+                                <span>{{ error }}</span>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        {{ form.state(class="form-control form-control-lg") }}
+                    {% endif %}
+                </div>
 				<div class = "form-group">
                 	<!-- Zip Code Field -->
                     {{ form.zipCode.label(class="form-control-label") }}
