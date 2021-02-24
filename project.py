@@ -3,6 +3,7 @@ from forms import RegistrationForm, LoginForm, AccountInfoForm
 
 app = Flask(__name__)
 
+app.config['SECRET_KEY'] = '788270a3a29cf81029ca3a09528ff90a'
 
 # Temporary JSON structures for the history page input
 quote_histories = [
