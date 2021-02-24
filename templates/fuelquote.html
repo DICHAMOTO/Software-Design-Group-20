@@ -1,0 +1,43 @@
+{% extends "layout.html" %}
+{% block content %}
+    <style>
+    table, th, td {
+      border: 1px solid black;
+      border-collapse: collapse;
+    }
+    </style>
+    <article class="media content-section">
+        <div class="media-body">           
+            <div class="article-metadata">
+                <h3>Fuel Quote</h3>
+            </div>
+            <a class="mr-2" href="#">{{ post.author }}</a>
+            <table class="list-group-item list-group-item-light">
+                <thead>
+                    <tr>
+                        <th> Gallons  </th>
+                        <th>Address</th>
+                        <th >Delivery Date</th>
+                        <th>Suggested Price</th>
+                        <th>Total Amount Due</th>
+                    </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td>{{ post.gallons }}</td>
+                    <td>{{ post.address }}</td>
+                    <td>{{ post.date_posted }}</td>
+                    <td>$400</td>
+                    <td>${{ post.gallons * 400 }}</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </article>
+
+    <div class="border-top pt-3">
+        <small class="text-muted">
+            Back to Home <a class="ml-2" href="{{ url_for('home') }}">Home</a>
+        </small>
+    </div>
+{% endblock content %}

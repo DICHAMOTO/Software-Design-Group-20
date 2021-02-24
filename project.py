@@ -3,9 +3,21 @@ from forms import RegistrationForm, LoginForm, AccountInfoForm
 
 app = Flask(__name__)
 
+# Aki's JSON
+posts = [
+    {
+        'author': 'Tina Suzuki',
+        'title': 'Blog Post 1',
+        'content': 'First post content',
+        'date_posted': 'April 20, 2018',
+        'gallons': 30,
+        'address': '2244 Bake Ave, Houston TX'
+    }
+]
+
 app.config['SECRET_KEY'] = '788270a3a29cf81029ca3a09528ff90a'
 
-# Temporary JSON structures for the history page input
+# Songwen's Temporary JSON structures for the history page input
 quote_histories = [
     {
         'client_name': 'Sheila W Koga',
@@ -101,6 +113,12 @@ def profileManagement():
 @app.route("/history")
 def display_history():
     return render_template('history.html', title='History', histories=quote_histories)
+
+
+@app.route('/fuelquote')
+def fuelquote():
+    return render_template('fuelquote.html', title='Fuel Quote', post=posts[0])
+
 
 
 if __name__ == '__main__':
