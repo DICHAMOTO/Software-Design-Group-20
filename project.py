@@ -1,4 +1,5 @@
 from flask import Flask, render_template, url_for
+from forms import RegistrationForm, LoginForm, AccountInfoForm
 
 app = Flask(__name__)
 
@@ -34,16 +35,61 @@ quote_histories = [
     }
 ]
 
-
+# Method for the home page
 @app.route("/")
 @app.route("/home")
 def home():
     return render_template('home.html')
 
-
+# Method for the about page
 @app.route("/about")
 def about():
-    return render_template('about.html', title='About')
+    return render_template('about.html', title = 'About')
+
+# Method for the registration page
+# 'GET' and 'POST' methods for get and post requests
+@app.route("/register", methods = ['GET', 'POST'])
+def register():
+	# Instantiate a registration form
+	form = RegistrationForm()
+	# If account is created successfully then flash a message letting the 
+	# user know that their account was created and redirect them to 
+	# the profile management page so they can fill out account information
+	if form.validate_on_submit():
+		flash(f'Account created for {form.username.data}!', 'success')
+		return redirect(url_for('profileManagement'))
+	return render_template('register.html', title = 'Register', form = form)
+
+# Method for the login page
+@app.route("/login", methods = ['GET', 'POST'])
+def login():
+	# Instantiate a login form and take user to the login page
+	form = LoginForm()
+	# If login is successful, then flash a message to the user that their login
+	# was successful.
+	# If the login is unsuccessful, then flash a message that the username or
+	# password is incorrect.
+	if form.validate_on_submit():
+		# This username and password data is just dummy data to test out 
+		# login functionality. Will be deleted in future.
+		if form.username.data == 'moto' and form.password.data == 'testing':
+			flash(f'You have been logged in! Welcome {form.username.data}!', 'success')
+			return redirect(url_for('home'))
+		else:
+			flash(f'Login Unsuccessful. Please check username or password.' ,'danger')
+	return render_template('login.html', title = 'Login', form = form)
+
+# Method for profile management
+@app.route("/profilemgmt", methods = ['GET', 'POST'])
+def profileManagement():
+	# Instantiate the account information form
+	form = AccountInfoForm()
+	# If all fields are correctly filled out, then flash success message
+	if form.validate_on_submit():
+		flash(f'{form.fullName.data} your account information has been successfully updated',
+		 'success')
+	return render_template('account.html', title = "Account", 
+		form = form)
 
 
 @app.route("/history")

@@ -10,34 +10,31 @@
 
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='main.css') }}">
 
-	{% if title %}
-		<title>Group 20 Project - {{ title }}</title>
-	{% else %}
-		<title>Group 20 Project</title>
-	{% endif %}
-  <style>
-    table, th, td {
-      border: 1px solid black;
-    }
-    </style>
+    <!-- Code for printing out title on the tab of web browser -->
+  {% if title %}
+    <title>Group 20 Project - {{ title }}</title>
+  {% else %}
+    <title>Group 20 Project</title>
+  {% endif %}
 </head>
 <body>
     <header class="site-header">
+    <!-- html code required for the navigation bar -->
       <nav class="navbar navbar-expand-md navbar-dark bg-steel fixed-top">
         <div class="container">
-          <a class="navbar-brand mr-4" href="/">Flask Blog</a>
+          <a class="navbar-brand mr-4" href="/">COSC 4353 Group 20 Project</a>
           <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarToggle" aria-controls="navbarToggle" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
           </button>
           <div class="collapse navbar-collapse" id="navbarToggle">
             <div class="navbar-nav mr-auto">
-              <a class="nav-item nav-link" href="/">Home</a>
-              <a class="nav-item nav-link" href="/about">About</a>
+              <a class="nav-item nav-link" href="{{ url_for('home') }}">Home</a>
+              <a class="nav-item nav-link" href="{{ url_for('about') }}">About</a>
             </div>
             <!-- Navbar Right Side -->
             <div class="navbar-nav">
-              <a class="nav-item nav-link" href="/login">Login</a>
-              <a class="nav-item nav-link" href="/register">Register</a>
+              <a class="nav-item nav-link" href="{{ url_for('login') }}">Login</a>
+              <a class="nav-item nav-link" href="{{ url_for('register') }}">Register</a>
             </div>
           </div>
         </div>
@@ -46,10 +43,21 @@
     <main role="main" class="container">
       <div class="row">
         <div class="col-md-8">
+          <!-- This sequence of code blocks will alert the user of any flashed messages no matter what page they are on -->
+          {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+              {% for category, message in messages %}
+                <div class='alert alert-{{ category }}'>
+                  {{ message }}
+                </div>
+              {% endfor %}
+            {% endif %}
+          {% endwith %}
           {% block content %}{% endblock %}
         </div>
         <div class="col-md-4">
           <div class="content-section">
+            <!-- Sidebar contents -->
             <h3>The Sidebar</h3>
             <p class='text-muted'>You can put any information here you'd like.
               <ul class="list-group">
@@ -64,8 +72,6 @@
       </div>
     </main>
 
-
-    <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
