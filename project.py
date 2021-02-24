@@ -60,7 +60,7 @@ def register():
     # user know that their account was created and redirect them to
     # the profile management page so they can fill out account information
     if form.validate_on_submit():
-        flash(f'Account created for {form.username.data}!', 'success')
+        flash(f'Account created for {form.username.data}! Please Login on this page.', 'success')
         return redirect(url_for('login'))
     return render_template('register.html', title='Register', form=form)
 
@@ -78,7 +78,7 @@ def login():
         # This username and password data is just dummy data to test out
         # login functionality. Will be deleted in future.
         if form.username.data == 'moto' and form.password.data == 'testing':
-            flash(f'You have been logged in! Welcome {form.username.data}!', 'success')
+            flash(f'You have been logged in! Welcome {form.username.data}! Please complete your profile.', 'success')
             return redirect(url_for('profileManagement'))
         else:
             flash(f'Login Unsuccessful. Please check username or password.', 'danger')
