@@ -8,15 +8,7 @@ posts = [
         'title': 'Blog Post 1',
         'content': 'First post content',
         'date_posted': 'April 20, 2018',
-        'requested_gallons': '30',
-        'address': '2244 Bake Ave, Houston TX'
-    },
-    {
-        'author': 'Joe Sasaki',
-        'title': 'Blog Post 2',
-        'content': 'Second post content',
-        'date_posted': 'April 21, 2018',
-        'requested_gallons': '50',
+        'gallons': 30,
         'address': '2244 Bake Ave, Houston TX'
     }
 ]
@@ -32,7 +24,7 @@ def about():
 
 @app.route('/fuelquote')
 def fuelquote():
-    return render_template('fuelquote.html', title='Fuel Quote', post=posts[1])
+    return render_template('fuelquote.html', title='Fuel Quote', post=posts[0])
 
 
 
