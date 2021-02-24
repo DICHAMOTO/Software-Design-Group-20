@@ -16,6 +16,23 @@
   {% else %}
     <title>Group 20 Project</title>
   {% endif %}
+    <style>
+table {
+  font-family: arial, sans-serif;
+  border-collapse: collapse;
+  width: 100%;
+}
+
+td, th {
+  border: 1px solid #dddddd;
+  text-align: center;
+  padding: 10px;
+}
+
+tr:nth-child(even) {
+  background-color: #dddddd;
+}
+    </style>
 </head>
 <body>
     <header class="site-header">
@@ -30,6 +47,7 @@
             <div class="navbar-nav mr-auto">
               <a class="nav-item nav-link" href="{{ url_for('home') }}">Home</a>
               <a class="nav-item nav-link" href="{{ url_for('about') }}">About</a>
+              <a class="nav-item nav-link" href="{{ url_for('display_history') }}">Quote Records</a>
             </div>
             <!-- Navbar Right Side -->
             <div class="navbar-nav">
