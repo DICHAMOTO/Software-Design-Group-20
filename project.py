@@ -1,19 +1,8 @@
 from flask import Flask, render_template, url_for, flash, redirect
-from forms import RegistrationForm, LoginForm, AccountInfoForm
+from forms import RegistrationForm, LoginForm, AccountInfoForm, FuelQuoteForm
 
 app = Flask(__name__)
 
-# Aki's JSON
-posts = [
-    {
-        'author': 'Tina Suzuki',
-        'title': 'Blog Post 1',
-        'content': 'First post content',
-        'date_posted': 'April 20, 2018',
-        'gallons': 30,
-        'address': '2244 Bake Ave, Houston TX'
-    }
-]
 
 app.config['SECRET_KEY'] = '788270a3a29cf81029ca3a09528ff90a'
 
@@ -110,14 +99,17 @@ def profileManagement():
                            form=form)
 
 
+@app.route('/fuelquote', methods=['GET', 'POST'])
+def fuelquote():
+    form = FuelQuoteForm()
+    if form.validate_on_submit():
+        flash(f'quoted!','success')  
+    return render_template('fuelquote.html', title='Fuel Quote', form=form)
+
+
 @app.route("/history")
 def display_history():
     return render_template('history.html', title='History', histories=quote_histories)
-
-
-@app.route('/fuelquote')
-def fuelquote():
-    return render_template('fuelquote.html', title='Fuel Quote', post=posts[0])
 
 
 
