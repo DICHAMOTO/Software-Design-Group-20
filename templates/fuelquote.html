@@ -1,43 +1,64 @@
 {% extends "layout.html" %}
 {% block content %}
-    <style>
-    table, th, td {
-      border: 1px solid black;
-      border-collapse: collapse;
-    }
-    </style>
-    <article class="media content-section">
-        <div class="media-body">           
-            <div class="article-metadata">
-                <h3>Fuel Quote</h3>
-            </div>
-            <a class="mr-2" href="#">{{ post.author }}</a>
-            <table class="list-group-item list-group-item-light">
-                <thead>
-                    <tr>
-                        <th> Gallons  </th>
-                        <th>Address</th>
-                        <th >Delivery Date</th>
-                        <th>Suggested Price</th>
-                        <th>Total Amount Due</th>
-                    </tr>
-                </thead>
-                <tbody>
-                <tr>
-                    <td>{{ post.gallons }}</td>
-                    <td>{{ post.address }}</td>
-                    <td>{{ post.date_posted }}</td>
-                    <td>$400</td>
-                    <td>${{ post.gallons * 400 }}</td>
-                </tr>
-                </tbody>
-            </table>
-        </div>
-    </article>
+    <div class="content-section">
+        <form method="POST" action="">
+            {{ form.hidden_tag() }}
+            <fieldset class="form-group">
+                <legend class="border-bottom mb-4">Fuel Quote</legend>
+                <div class="form-group">
+                    {{ form.date.label(class="form-control-label") }}
 
-    <div class="border-top pt-3">
-        <small class="text-muted">
-            Back to Home <a class="ml-2" href="{{ url_for('home') }}">Home</a>
-        </small>
+                    {% if form.date.errors %}
+                            {{ form.date(class="form-control form-control-lg is-invalid")  }}
+                            <div class="invalid-feedback">
+                                {% for error in form.date.errors %}
+                                    <span>{{ error }}</span>
+                                {% endfor %}
+                            </div>
+                    {% else %}
+                        {{ form.date(class="form-control form-control-lg") }}
+                    {% endif %}                 
+                </div>
+                <div class="form-group">
+                    {{ form.gallons.label(class="form-control-label") }}
+                    
+                    {% if form.gallons.errors %}
+                        {{ form.gallons(class="form-control form-control-lg is-invalid")  }}
+                        <div class="invalid-feedback">
+                            {% for error in form.gallons.errors %}
+                                <span>{{ error }}</span>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        {{ form.gallons(class="form-control form-control-lg") }}
+                    {% endif %} 
+                </div>
+                <div class="form-group">
+                    <p class='text-muted'>Delivery Address
+                        <div class="list-group-item list-group-item-light">2424 Bake Ave. Houston, TX 12345</div>
+                    </p>
+                </div>
+                <div class="form-group">
+                    <p class='text-muted'>Suggested Price
+                        <div class="list-group-item list-group-item-light">${{ 2.01 }}</div>
+                    </p>
+                </div>
+                <div class="form-group">
+                    <p class='text-muted'>Total Amount Due
+                        <div class="list-group-item list-group-item-light">
+                        {% if form.gallons.data == None %}
+                            <div>N/A</div> 
+                        {% else %}                    
+                            {{ "$%.2f"|format(2.01 * form.gallons.data) }}                           
+                        {% endif %} 
+                        </div>
+                    </p>
+                </div>
+            </fieldset>
+            <div class="form-group">
+                {{ form.submit(class="btn btn-outline-info") }}
+            </div>
+        </form>
     </div>
+
 {% endblock content %}
