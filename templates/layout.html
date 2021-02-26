@@ -12,7 +12,6 @@
 
      <!-- bootstrap-datepicker CSS -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.7.1/css/bootstrap-datepicker.min.css" rel="stylesheet"/>
-    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
 
     <!-- Code for printing out title on the tab of web browser -->
   {% if title %}
@@ -51,6 +50,7 @@ tr:nth-child(even) {
             <div class="navbar-nav mr-auto">
               <a class="nav-item nav-link" href="{{ url_for('home') }}">Home</a>
               <a class="nav-item nav-link" href="{{ url_for('about') }}">About</a>
+              <a class="nav-item nav-link" href="{{ url_for('fuelquote') }}">Fuel Quote</a>
               <a class="nav-item nav-link" href="{{ url_for('display_history') }}">Quote Records</a>
             </div>
             <!-- Navbar Right Side -->
