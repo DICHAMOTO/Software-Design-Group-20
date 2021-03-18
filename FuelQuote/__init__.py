@@ -33,11 +33,13 @@ def create_app(test_config=None):
     def hello():
         return 'Hello, World!'
 
-    # def create_app():
-    #     app = ...
-    #     # existing code omitted
-    #
-    #     from . import db
-    #     db.init_app(app)
+    # register the database
+    from FuelQuote import db
+
+    db.init_app(app)
+
+    # apply the blueprint to the app
+    from FuelQuote import auth
+    app.register_blueprint(auth.bp)
 
     return app
