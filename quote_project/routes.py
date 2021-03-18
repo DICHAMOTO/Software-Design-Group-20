@@ -1,19 +1,15 @@
-from flask import Flask, render_template, url_for, flash, redirect
-from forms import RegistrationForm, LoginForm, AccountInfoForm, FuelQuoteForm
-
-app = Flask(__name__)
-
-
-app.config['SECRET_KEY'] = '788270a3a29cf81029ca3a09528ff90a'
-
-# Songwen's Temporary JSON structures for the history page input
+from flask import render_template, url_for, flash, redirect
+from quote_project.forms import RegistrationForm, LoginForm, AccountInfoForm, FuelQuoteForm
+from quote_project import app
+from quote_project.models import User, Quote
+# Songwen's Dummy Temporary JSON structures for the history page input
 quote_histories = [
     {
         'client_name': 'Sheila W Koga',
         'gallons_requested': '5000',
         'delivery_address': '1989 Scenic Way, Champaign, Illinois(IL), 61820',
         'delivery_date': '03-01-2021',
-        'suggested_pice': '$2.05',
+        'suggested_price': '$2.05',
         'total_amount': '$10250',
         'quote_created': '02-23-2021'
     },
@@ -22,7 +18,7 @@ quote_histories = [
         'gallons_requested': '2500',
         'delivery_address': '263 Snowbird Lane, Omaha, Nebraska(NE), 68114',
         'delivery_date': '02-28-2021',
-        'suggested_pice': '$1.95',
+        'suggested_price': '$1.95',
         'total_amount': '$4875',
         'quote_created': '02-21-2021'
     },
@@ -31,7 +27,7 @@ quote_histories = [
         'gallons_requested': '10500',
         'delivery_address': '673 Cross Street, Saginaw, Michigan(MI), 48601',
         'delivery_date': '04-23-2021',
-        'suggested_pice': '$3.00',
+        'suggested_price': '$3.00',
         'total_amount': '$31500',
         'quote_created': '01-31-2021'
     }
@@ -103,15 +99,10 @@ def profileManagement():
 def fuelquote():
     form = FuelQuoteForm()
     if form.validate_on_submit():
-        flash(f'quoted!','success')  
+        flash(f'quoted!', 'success')
     return render_template('fuelquote.html', title='Fuel Quote', form=form)
 
 
 @app.route("/history")
 def display_history():
     return render_template('history.html', title='History', histories=quote_histories)
-
-
-
-if __name__ == '__main__':
-    app.run(debug=True)
