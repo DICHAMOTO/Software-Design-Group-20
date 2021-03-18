@@ -1,7 +1,9 @@
 from flask_wtf import FlaskForm
-from wtforms import validators, StringField, PasswordField, SubmitField, BooleanField, SelectField, IntegerField, DateField
+from wtforms import validators, StringField, PasswordField, SubmitField, BooleanField, SelectField, IntegerField, \
+    DateField
 from wtforms.validators import DataRequired, Length, EqualTo, ValidationError
 from wtforms.fields.html5 import DateField
+
 
 # Code for the registration form that users will fill out if they want to
 # create an account
@@ -36,7 +38,6 @@ class LoginForm(FlaskForm):
     remember = BooleanField('Remember me')
     # Login button
     submit = SubmitField('Login')
-
 
 
 # A function that checks to make sure that the zip code entered is numerical
@@ -102,8 +103,8 @@ class FuelQuoteForm(FlaskForm):
     # Gallons field
     gallons = IntegerField('Request Gallons', validators=[DataRequired()])
     # Delivery Date field
-    #date = DateField('Delivery Date', format="%m/%d/%Y", validators=[DataRequired()])
+    # date = DateField('Delivery Date', format="%m/%d/%Y", validators=[DataRequired()])
     date = DateField('Delivery Date', format='%Y-%m-%d', validators=(validators.DataRequired(),))
-    #date = DateField('DatePicker', format='%Y-%m-%d')
+    # date = DateField('DatePicker', format='%Y-%m-%d')
     # Quote button
     submit = SubmitField('Quote')

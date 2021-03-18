@@ -3,7 +3,6 @@ from forms import RegistrationForm, LoginForm, AccountInfoForm, FuelQuoteForm
 
 app = Flask(__name__)
 
-
 app.config['SECRET_KEY'] = '788270a3a29cf81029ca3a09528ff90a'
 
 # Songwen's Temporary JSON structures for the history page input
@@ -103,14 +102,13 @@ def profileManagement():
 def fuelquote():
     form = FuelQuoteForm()
     if form.validate_on_submit():
-        flash(f'quoted!','success')  
+        flash(f'quoted!', 'success')
     return render_template('fuelquote.html', title='Fuel Quote', form=form)
 
 
 @app.route("/history")
 def display_history():
     return render_template('history.html', title='History', histories=quote_histories)
-
 
 
 if __name__ == '__main__':
