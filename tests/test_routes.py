@@ -10,7 +10,7 @@ def test_root_route():
     assert response.status_code == 200
 
 
-def test_about_route():
+def test_home_route():
     client = app.test_client()
     url = '/home'
 
@@ -22,15 +22,6 @@ def test_about_route():
 def test_about_route():
     client = app.test_client()
     url = '/about'
-
-    response = client.get(url)
-    assert response.data is not None
-    assert response.status_code == 200
-
-
-def test_register_route():
-    client = app.test_client()
-    url = '/register'
 
     response = client.get(url)
     assert response.data is not None
