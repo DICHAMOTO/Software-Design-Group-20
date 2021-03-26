@@ -3,3 +3,4 @@ Flask-WTF
 WTForms~=2.3.3
 Flask-SQLAlchemy
 pytest
+flask-bcrypt
