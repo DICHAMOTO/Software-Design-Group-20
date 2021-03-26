@@ -1,8 +1,9 @@
 from flask_wtf import FlaskForm
 from wtforms import validators, StringField, PasswordField, SubmitField, BooleanField, SelectField, IntegerField, \
-    DateField
+    DateField, ValidationError
 from wtforms.validators import DataRequired, Length, EqualTo, ValidationError
 from wtforms.fields.html5 import DateField
+from quote_project.models import  User
 
 
 # Code for the registration form that users will fill out if they want to
@@ -27,6 +28,11 @@ class RegistrationForm(FlaskForm):
     # A submittion field that will sign the user up
     submit = SubmitField('Sign Up')
 
+    # check if account is already existed in our db
+    def validate_username(self, username):
+        user = User.query.filter_by(username=username.data).first()
+        if user:
+            raise ValidationError('The username has already been taken. Please choose another one.')
 
 # Code for the login form for when a registered user wants to login
 class LoginForm(FlaskForm):

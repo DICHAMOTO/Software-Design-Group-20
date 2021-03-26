@@ -1,6 +1,6 @@
 from flask import render_template, url_for, flash, redirect
 from quote_project.forms import RegistrationForm, LoginForm, AccountInfoForm, FuelQuoteForm
-from quote_project import app
+from quote_project import app, db, bcrypt
 from quote_project.models import User, Quote
 # Songwen's Dummy Temporary JSON structures for the history page input
 quote_histories = [
@@ -57,7 +57,13 @@ def register():
     # user know that their account was created and redirect them to
     # the profile management page so they can fill out account information
     if form.validate_on_submit():
-        flash(f'Account created for {form.username.data}! Please Login on this page.', 'success')
+        hashed_password = bcrypt.generate_password_hash(form.password.data).decode('utf-8')
+        user = User(username=form.username.data, password=hashed_password)
+        # add new user to the database
+        db.session.add(user)
+        db.session.commit()
+        flash(f'Dear {form.username.data}, you account has been successfully created! Please Login on this page.', \
+              'success')
         return redirect(url_for('login'))
     return render_template('register.html', title='Register', form=form)
 
