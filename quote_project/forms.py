@@ -28,7 +28,7 @@ class RegistrationForm(FlaskForm):
     # A submittion field that will sign the user up
     submit = SubmitField('Sign Up')
 
-    # check if account is already existed in our db
+    # automated function check if account is already existed in our db
     def validate_username(self, username):
         user = User.query.filter_by(username=username.data).first()
         if user:
@@ -114,3 +114,4 @@ class FuelQuoteForm(FlaskForm):
     # date = DateField('DatePicker', format='%Y-%m-%d')
     # Quote button
     submit = SubmitField('Quote')
+
