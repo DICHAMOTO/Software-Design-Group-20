@@ -60,7 +60,9 @@ def register():
     # user know that their account was created and redirect them to
     # the profile management page so they can fill out account information
     if form.validate_on_submit():
+        # hash the user password for higher security level
         hashed_password = bcrypt.generate_password_hash(form.password.data).decode('utf-8')
+        # create instance of user model and store name and hashed_password in it
         user = User(username=form.username.data, password=hashed_password)
         # add new user to the database
         db.session.add(user)
