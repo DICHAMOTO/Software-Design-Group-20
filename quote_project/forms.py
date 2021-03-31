@@ -3,7 +3,7 @@ from wtforms import validators, StringField, PasswordField, SubmitField, Boolean
     DateField, ValidationError
 from wtforms.validators import DataRequired, Length, EqualTo, ValidationError
 from wtforms.fields.html5 import DateField
-from quote_project.models import  User
+from quote_project.models import User
 
 
 # Code for the registration form that users will fill out if they want to

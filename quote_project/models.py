@@ -1,14 +1,18 @@
 # This file introduces the database configurations we are using
 from datetime import datetime
-from quote_project import db
+from quote_project import db, login_manager
+from flask_login import UserMixin
 
+@login_manager.user_loader
+def load_user(user_id):
+    return User.query.get(int(user_id))
 
 #### USER TABLE ####
 # store the basic user credentials.
 # Some entities below are set to nullable
 # because when the user register for an account,
 # only the username and password are required
-class User(db.Model):
+class User(db.Model, UserMixin):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(20), unique=True, nullable=False)
     password = db.Column(db.String(60), nullable=False)

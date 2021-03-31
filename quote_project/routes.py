@@ -1,7 +1,8 @@
-from flask import render_template, url_for, flash, redirect
+from flask import render_template, url_for, flash, redirect, request
 from quote_project.forms import RegistrationForm, LoginForm, AccountInfoForm, FuelQuoteForm
 from quote_project import app, db, bcrypt
-from quote_project.models import User, Quote
+from quote_project.models import User, Quote, Profile
+from flask_login import current_user, login_required, login_user, logout_user
 # Songwen's Dummy Temporary JSON structures for the history page input
 quote_histories = [
     {
@@ -51,6 +52,8 @@ def about():
 # 'GET' and 'POST' methods for get and post requests
 @app.route("/register", methods=['GET', 'POST'])
 def register():
+    if current_user.is_authenticated:
+        return redirect(url_for('home'))
     # Instantiate a registration form
     form = RegistrationForm()
     # If account is created successfully then flash a message letting the
@@ -71,6 +74,8 @@ def register():
 # Method for the login page
 @app.route("/login", methods=['GET', 'POST'])
 def login():
+    if current_user.is_authenticated:
+        return redirect(url_for('home'))
     # Instantiate a login form and take user to the login page
     form = LoginForm()
     # If login is successful, then flash a message to the user that their login
@@ -80,9 +85,14 @@ def login():
     if form.validate_on_submit():
         # This username and password data is just dummy data to test out
         # login functionality. Will be deleted in future.
-        if form.username.data == 'moto' and form.password.data == 'testing':
-            flash(f'You have been logged in! Welcome {form.username.data}! Please complete your profile.', 'success')
-            return redirect(url_for('profileManagement'))
+        #if form.username.data == 'moto' and form.password.data == 'testing':
+            #flash(f'You have been logged in! Welcome {form.username.data}! Please complete your profile.', 'success')
+            #return redirect(url_for('profileManagement'))
+        user = User.query.filter_by(username=form.username.data).first()
+        if user and bcrypt.check_password_hash(user.password, form.password.data):
+            login_user(user, remember=form.remember.data)
+            next_page = request.args.get('next')
+            return redirect(next_page) if next_page else redirect(url_for('home'))
         else:
             flash(f'Login Unsuccessful. Please check username or password.', 'danger')
     return render_template('login.html', title='Login', form=form)
@@ -90,6 +100,7 @@ def login():
 
 # Method for profile management
 @app.route("/profilemgmt", methods=['GET', 'POST'])
+@login_required
 def profileManagement():
     # Instantiate the account information form
     form = AccountInfoForm()
@@ -97,11 +108,12 @@ def profileManagement():
     if form.validate_on_submit():
         flash(f'{form.fullName.data} your account information has been successfully updated',
               'success')
-    return render_template('account.html', title="Account",
+    return render_template('account.html', title="Profile Management",
                            form=form)
 
 
 @app.route('/fuelquote', methods=['GET', 'POST'])
+@login_required
 def fuelquote():
     form = FuelQuoteForm()
     if form.validate_on_submit():
@@ -110,5 +122,12 @@ def fuelquote():
 
 
 @app.route("/history")
+@login_required
 def display_history():
     return render_template('history.html', title='History', histories=quote_histories)
+
+@app.route("/logout")
+@login_required
+def logout():
+    logout_user()
+    return redirect(url_for('home'))
