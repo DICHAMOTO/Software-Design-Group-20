@@ -29,14 +29,16 @@ class User(db.Model, UserMixin):
 class Profile(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    fullname = db.Column(db.String(100), unique=False, nullable=False)
     address1 = db.Column(db.String(100), unique=False, nullable=False)
     address2 = db.Column(db.String(100), unique=False, nullable=True)  # optional filed
     city = db.Column(db.String(100), unique=False, nullable=False)
     state = db.Column(db.String(20), unique=False, nullable=False)
     zip = db.Column(db.String(10), unique=False, nullable=False)
+    quotes = db.relationship('Quote', backref='profile', lazy=True)
 
     def __repr__(self):
-        return f"Profile('{self.address1}', '{self.address2}', '{self.city}', '{self.state}', '{self.zip}'"
+        return f"Profile('{self.address1}', '{self.address2}', '{self.city}', '{self.state}', '{self.zip}')"
 
 
 ### Quote TABLE ####
@@ -48,6 +50,7 @@ class Quote(db.Model):
     suggested_price = db.Column(db.Float)
     date_quoted = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    profile_id = db.Column(db.Integer, db.ForeignKey('profile.id'), nullable=False)
     total = db.Column(db.Float, nullable=False)
 
     def __repr__(self):
