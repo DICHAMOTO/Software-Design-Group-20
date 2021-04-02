@@ -1,7 +1,10 @@
 from flask_wtf import FlaskForm
-from wtforms import validators, StringField, PasswordField, SubmitField, BooleanField, SelectField, IntegerField, DateField
+from wtforms import validators, StringField, PasswordField, SubmitField, BooleanField, SelectField, IntegerField, \
+    DateField, ValidationError
 from wtforms.validators import DataRequired, Length, EqualTo, ValidationError
 from wtforms.fields.html5 import DateField
+from quote_project.models import User
+
 
 # Code for the registration form that users will fill out if they want to
 # create an account
@@ -25,6 +28,11 @@ class RegistrationForm(FlaskForm):
     # A submittion field that will sign the user up
     submit = SubmitField('Sign Up')
 
+    # automated function check if account is already existed in our db
+    def validate_username(self, username):
+        user = User.query.filter_by(username=username.data).first()
+        if user:
+            raise ValidationError('The username has already been taken. Please choose another one.')
 
 # Code for the login form for when a registered user wants to login
 class LoginForm(FlaskForm):
@@ -36,7 +44,6 @@ class LoginForm(FlaskForm):
     remember = BooleanField('Remember me')
     # Login button
     submit = SubmitField('Login')
-
 
 
 # A function that checks to make sure that the zip code entered is numerical
@@ -102,8 +109,9 @@ class FuelQuoteForm(FlaskForm):
     # Gallons field
     gallons = IntegerField('Request Gallons', validators=[DataRequired()])
     # Delivery Date field
-    #date = DateField('Delivery Date', format="%m/%d/%Y", validators=[DataRequired()])
+    # date = DateField('Delivery Date', format="%m/%d/%Y", validators=[DataRequired()])
     date = DateField('Delivery Date', format='%Y-%m-%d', validators=(validators.DataRequired(),))
-    #date = DateField('DatePicker', format='%Y-%m-%d')
+    # date = DateField('DatePicker', format='%Y-%m-%d')
     # Quote button
     submit = SubmitField('Quote')
+
