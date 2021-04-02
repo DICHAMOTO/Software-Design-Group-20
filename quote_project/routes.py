@@ -112,19 +112,27 @@ def profileManagement():
         flash(f'{form.fullName.data} your account information has been successfully updated',
               'success')
 
-    print( "current_user.id = "+ str(current_user.id))
+        print( "current_user.id = "+ str(current_user.id))
 
-    exist = db.session.query(db.exists().where(Profile.user_id == current_user.id)).scalar()
-    print("EXIST is " +str(exist))
+        exist = db.session.query(db.exists().where(Profile.user_id == current_user.id)).scalar() # check if this is exist in profile table
+        print("EXIST is " +str(exist))
 
-    if exist: #modify
-        print("heynow")
-    else:
-        profileEntry = Profile(user_id = current_user.id, address1 = form.addressOne.data,
-        address2 = form.addressTwo.data, city = form.city.data, state = form.state.data, zip = form.zipCode.data)
-        print(profileEntry)
-        # add row to db commitment
-        db.session.add(profileEntry)
+
+        if exist: #modify
+            prof = db.session.query(Profile).filter(Profile.user_id == current_user.id).first()
+            prof.fullname = form.fullName.data
+            prof.address1 = form.addressOne.data
+            prof.address2 = form.addressTwo.data
+            prof.city = form.city.data
+            prof.state = form.state.data
+            prof.zip = form.zipCode.data
+
+        else:       
+            profileEntry = Profile(user_id = current_user.id, fullname = form.fullName.data, address1 = form.addressOne.data,
+            address2 = form.addressTwo.data, city = form.city.data, state = form.state.data, zip = form.zipCode.data)
+            print(profileEntry)
+            # add row to db commitment
+            db.session.add(profileEntry)
         # push to the db
         db.session.commit()
     return render_template('account.html', title="Profile Management",
