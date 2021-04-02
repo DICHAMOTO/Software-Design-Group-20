@@ -83,12 +83,7 @@ def profileManagement():
         flash(f'{form.fullName.data} your account information has been successfully updated',
               'success')
 
-
-        print( "current_user.id = "+ str(current_user.id))
-
         exist = db.session.query(db.exists().where(Profile.user_id == current_user.id)).scalar() # check if this is exist in profile table
-        print("EXIST is " +str(exist))
-
 
         if exist: #modify
             prof = db.session.query(Profile).filter(Profile.user_id == current_user.id).first()
@@ -99,7 +94,7 @@ def profileManagement():
             prof.state = form.state.data
             prof.zip = form.zipCode.data
 
-        else:       
+        else:  # the profile of currentuser not exist     
             profileEntry = Profile(user_id = current_user.id, fullname = form.fullName.data, address1 = form.addressOne.data,
             address2 = form.addressTwo.data, city = form.city.data, state = form.state.data, zip = form.zipCode.data)
             print(profileEntry)
