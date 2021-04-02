@@ -94,6 +94,7 @@ def login():
         if user and bcrypt.check_password_hash(user.password, form.password.data):
             login_user(user, remember=form.remember.data)
             next_page = request.args.get('next')
+            flash(f'Howdy {form.username.data}! Now redirecting you to your homepage.', 'success')
             return redirect(next_page) if next_page else redirect(url_for('home'))
         else:
             flash(f'Login Unsuccessful. Please check username or password.', 'danger')
@@ -104,7 +105,7 @@ def login():
 @app.route("/profilemgmt", methods=['GET', 'POST'])
 @login_required
 def profileManagement():
-    # Instantiate the account information form
+    # # Instantiate the account information form
     form = AccountInfoForm()
     # If all fields are correctly filled out, then flash success message
     if form.validate_on_submit():
@@ -115,15 +116,15 @@ def profileManagement():
 
     exist = db.session.query(db.exists().where(Profile.user_id == current_user.id)).scalar()
     print("EXIST is " +str(exist))
-    
-    if exist: #modify 
+
+    if exist: #modify
         print("heynow")
     else:
         profileEntry = Profile(user_id = current_user.id, address1 = form.addressOne.data,
         address2 = form.addressTwo.data, city = form.city.data, state = form.state.data, zip = form.zipCode.data)
         print(profileEntry)
         # add row to db commitment
-        db.session.add(profileEntry)     
+        db.session.add(profileEntry)
         # push to the db
         db.session.commit()
     return render_template('account.html', title="Profile Management",
@@ -134,8 +135,24 @@ def profileManagement():
 @login_required
 def fuelquote():
     form = FuelQuoteForm()
-    if form.validate_on_submit():
-        flash(f'quoted!', 'success')
+    if request.method == 'POST':
+        if request.form['submit_button'] == 'Calculate Total':
+            print("you press the calculate button!!!")
+            return render_template('fuelquote.html', title='Fuel Quote', form=form)
+        elif request.form['submit_button'] == 'Quote':
+            print("you press the quote button!!!")
+            user_id = current_user.id
+            profile_id = Profile.query.filter_by(user_id=user_id).first().id
+            delivery_date = form.date.data
+            request_gallons = form.gallons.data
+            suggested_price = form.price
+            total = request_gallons * suggested_price
+            quote = Quote(delivery_date=delivery_date, request_gallons=request_gallons, suggested_price=suggested_price,
+                          user_id=user_id, total=total, profile_id=profile_id)
+            db.session.add(quote)
+            db.session.commit()
+            flash(f'Quote!',
+                  'success')
     return render_template('fuelquote.html', title='Fuel Quote', form=form)
 
 
