@@ -96,8 +96,12 @@ def profileManagement():
         flash(f'{form.fullName.data} your account information has been successfully updated',
               'success')
 <<<<<<< Updated upstream:project.py
+<<<<<<< Updated upstream:project.py
     return render_template('account.html', title="Account",
 =======
+=======
+
+>>>>>>> Stashed changes:quote_project/routes.py
 
     print( "current_user.id = "+ str(current_user.id))
 
@@ -105,7 +109,11 @@ def profileManagement():
     print("EXIST is " +str(exist))
     
     if exist: #modify 
+<<<<<<< Updated upstream:project.py
 
+=======
+        print('heynow')
+>>>>>>> Stashed changes:quote_project/routes.py
     else:
         profileEntry = Profile(user_id = current_user.id, address1 = form.addressOne.data,
         address2 = form.addressTwo.data, city = form.city.data, state = form.state.data, zip = form.zipCode.data)
@@ -114,10 +122,13 @@ def profileManagement():
         db.session.add(profileEntry)     
         # push to the db
         db.session.commit()
+<<<<<<< Updated upstream:project.py
 
 
 
 
+=======
+>>>>>>> Stashed changes:quote_project/routes.py
     return render_template('account.html', title="Profile Management",
 >>>>>>> Stashed changes:quote_project/routes.py
                            form=form)
