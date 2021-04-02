@@ -110,6 +110,22 @@ def profileManagement():
     if form.validate_on_submit():
         flash(f'{form.fullName.data} your account information has been successfully updated',
               'success')
+
+    print( "current_user.id = "+ str(current_user.id))
+
+    exist = db.session.query(db.exists().where(Profile.user_id == current_user.id)).scalar()
+    print("EXIST is " +str(exist))
+    
+    if exist: #modify 
+        print("heynow")
+    else:
+        profileEntry = Profile(user_id = current_user.id, address1 = form.addressOne.data,
+        address2 = form.addressTwo.data, city = form.city.data, state = form.state.data, zip = form.zipCode.data)
+        print(profileEntry)
+        # add row to db commitment
+        db.session.add(profileEntry)     
+        # push to the db
+        db.session.commit()
     return render_template('account.html', title="Profile Management",
                            form=form)
 
@@ -133,3 +149,4 @@ def display_history():
 def logout():
     logout_user()
     return redirect(url_for('home'))
+  
