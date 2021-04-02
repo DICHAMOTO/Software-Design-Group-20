@@ -1,6 +1,6 @@
 from flask_wtf import FlaskForm
 from wtforms import validators, StringField, PasswordField, SubmitField, BooleanField, SelectField, IntegerField, \
-    DateField, ValidationError
+    DateField, ValidationError, FloatField
 from wtforms.validators import DataRequired, Length, EqualTo, ValidationError
 from wtforms.fields.html5 import DateField
 from quote_project.models import User
@@ -111,6 +111,9 @@ class FuelQuoteForm(FlaskForm):
     # Delivery Date field
     # date = DateField('Delivery Date', format="%m/%d/%Y", validators=[DataRequired()])
     date = DateField('Delivery Date', format='%Y-%m-%d', validators=(validators.DataRequired(),))
+    # acquire the suggested price from the pricing model here:
+    price = 7.01  # hard-coded price for temporary use
+    # suggested_price = FloatField('Suggested Price', validators=[DataRequired()], default=price)
     # date = DateField('DatePicker', format='%Y-%m-%d')
     # Quote button
     submit = SubmitField('Quote')
