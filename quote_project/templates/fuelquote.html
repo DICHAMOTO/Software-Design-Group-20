@@ -34,13 +34,8 @@
                     {% endif %} 
                 </div>
                 <div class="form-group">
-                    <p class='text-muted'>Delivery Address
-                        <div class="list-group-item list-group-item-light">2424 Bake Ave. Houston, TX 12345</div>
-                    </p>
-                </div>
-                <div class="form-group">
                     <p class='text-muted'>Suggested Price
-                        <div class="list-group-item list-group-item-light">${{ 2.01 }}</div>
+                        <div class="list-group-item list-group-item-light">${{ form.price }}</div>
                     </p>
                 </div>
                 <div class="form-group">
@@ -49,14 +44,15 @@
                         {% if form.gallons.data == None %}
                             <div>N/A</div> 
                         {% else %}                    
-                            {{ "$%.2f"|format(2.01 * form.gallons.data) }}                           
+                            {{ "$%.2f"|format(form.price * form.gallons.data) }}
                         {% endif %} 
                         </div>
                     </p>
                 </div>
             </fieldset>
             <div class="form-group">
-                {{ form.submit(class="btn btn-outline-info") }}
+                <input type="submit" name="submit_button" value="Calculate Total" class="btn btn-outline-info">
+                <input type="submit" name="submit_button" value="Quote" class="btn btn-outline-info">
             </div>
         </form>
     </div>
