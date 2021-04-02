@@ -3,6 +3,8 @@ from quote_project.forms import RegistrationForm, LoginForm, AccountInfoForm, Fu
 from quote_project import app, db, bcrypt
 from quote_project.models import User, Quote, Profile
 from flask_login import current_user, login_required, login_user, logout_user
+import json
+
 # Songwen's Dummy Temporary JSON structures for the history page input
 quote_histories = [
     {
@@ -87,9 +89,9 @@ def login():
     if form.validate_on_submit():
         # This username and password data is just dummy data to test out
         # login functionality. Will be deleted in future.
-        #if form.username.data == 'moto' and form.password.data == 'testing':
-            #flash(f'You have been logged in! Welcome {form.username.data}! Please complete your profile.', 'success')
-            #return redirect(url_for('profileManagement'))
+        # if form.username.data == 'moto' and form.password.data == 'testing':
+        # flash(f'You have been logged in! Welcome {form.username.data}! Please complete your profile.', 'success')
+        # return redirect(url_for('profileManagement'))
         user = User.query.filter_by(username=form.username.data).first()
         if user and bcrypt.check_password_hash(user.password, form.password.data):
             login_user(user, remember=form.remember.data)
@@ -112,6 +114,7 @@ def profileManagement():
         flash(f'{form.fullName.data} your account information has been successfully updated',
               'success')
 
+
         print( "current_user.id = "+ str(current_user.id))
 
         exist = db.session.query(db.exists().where(Profile.user_id == current_user.id)).scalar() # check if this is exist in profile table
@@ -133,6 +136,7 @@ def profileManagement():
             print(profileEntry)
             # add row to db commitment
             db.session.add(profileEntry)
+
         # push to the db
         db.session.commit()
     return render_template('account.html', title="Profile Management",
@@ -167,11 +171,41 @@ def fuelquote():
 @app.route("/history")
 @login_required
 def display_history():
-    return render_template('history.html', title='History', histories=quote_histories)
+    # count the # of row in Quote table:
+    numRow = Quote.query.count()
+    quote_records = []
+    # create empty dictionary:
+    for counter in range(1, numRow+1):
+        client_name = Quote.query.filter_by(id=counter).first().profile.fullname
+        gallons_requested = Quote.query.filter_by(id=counter).first().request_gallons
+        delivery_address1 = Quote.query.filter_by(id=counter).first().profile.address1
+        delivery_address2 = Quote.query.filter_by(id=counter).first().profile.address2
+        if delivery_address2 is None:
+            delivery_address2 = ""
+        zipcode = Quote.query.filter_by(id=counter).first().profile.zip
+        city = Quote.query.filter_by(id=counter).first().profile.city
+        state = Quote.query.filter_by(id=counter).first().profile.state
+        # concate address:
+        delivery_address = f'{delivery_address1} {delivery_address2}, {city}, {state}, {zipcode}'
+        delivery_date = Quote.query.filter_by(id=counter).first().delivery_date
+        suggested_price = Quote.query.filter_by(id=counter).first().suggested_price
+        total_amount = Quote.query.filter_by(id=counter).first().total
+        quote_created = Quote.query.filter_by(id=counter).first().date_quoted
+        temp_dict = {'client_name': client_name,
+                     'gallons_requested': gallons_requested,
+                     'delivery_address': delivery_address,
+                     'delivery_date': delivery_date,
+                     'suggested_price': f'${suggested_price}',
+                     'total_amount': f'${total_amount}',
+                     'quote_created': quote_created
+                     }
+        quote_records.append(temp_dict)
+    print(quote_records)
+    return render_template('history.html', title='History', histories=quote_records)
+
 
 @app.route("/logout")
 @login_required
 def logout():
     logout_user()
     return redirect(url_for('home'))
-  
