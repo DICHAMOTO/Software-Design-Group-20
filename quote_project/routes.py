@@ -5,37 +5,6 @@ from quote_project.models import User, Quote, Profile
 from flask_login import current_user, login_required, login_user, logout_user
 import json
 
-# Songwen's Dummy Temporary JSON structures for the history page input
-quote_histories = [
-    {
-        'client_name': 'Sheila W Koga',
-        'gallons_requested': '5000',
-        'delivery_address': '1989 Scenic Way, Champaign, Illinois(IL), 61820',
-        'delivery_date': '03-01-2021',
-        'suggested_price': '$2.05',
-        'total_amount': '$10250',
-        'quote_created': '02-23-2021'
-    },
-    {
-        'client_name': 'William E Walker',
-        'gallons_requested': '2500',
-        'delivery_address': '263 Snowbird Lane, Omaha, Nebraska(NE), 68114',
-        'delivery_date': '02-28-2021',
-        'suggested_price': '$1.95',
-        'total_amount': '$4875',
-        'quote_created': '02-21-2021'
-    },
-    {
-        'client_name': 'Robert G Ferreira',
-        'gallons_requested': '10500',
-        'delivery_address': '673 Cross Street, Saginaw, Michigan(MI), 48601',
-        'delivery_date': '04-23-2021',
-        'suggested_price': '$3.00',
-        'total_amount': '$31500',
-        'quote_created': '01-31-2021'
-    }
-]
-
 
 # Method for the home page
 @app.route("/")
@@ -96,8 +65,8 @@ def login():
         if user and bcrypt.check_password_hash(user.password, form.password.data):
             login_user(user, remember=form.remember.data)
             next_page = request.args.get('next')
-            flash(f'Howdy {form.username.data}! Now redirecting you to your homepage.', 'success')
-            return redirect(next_page) if next_page else redirect(url_for('home'))
+            flash(f'Howdy {form.username.data}! Now redirecting you to finish your profile.', 'success')
+            return redirect(next_page) if next_page else redirect(url_for('profileManagement'))
         else:
             flash(f'Login Unsuccessful. Please check username or password.', 'danger')
     return render_template('login.html', title='Login', form=form)
@@ -169,7 +138,6 @@ def fuelquote():
 
 
 @app.route("/history")
-@login_required
 def display_history():
     # count the # of row in Quote table:
     numRow = Quote.query.count()
