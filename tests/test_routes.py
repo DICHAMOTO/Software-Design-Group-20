@@ -45,26 +45,7 @@ def test_login_route():
     assert response.data is not None
     assert response.status_code == 200
 
-
-def test_profilemgmt_route():
-    client = app.test_client()
-    url = '/profilemgmt'
-
-    response = client.get(url)
-    assert response.data is not None
-    assert response.status_code == 200
-
-
-def test_fuelquote_route():
-    client = app.test_client()
-    url = '/fuelquote'
-
-    response = client.get(url)
-    assert response.data is not None
-    assert response.status_code == 200
-
-
-def test_history_route():
+def test_quote_history_route():
     client = app.test_client()
     url = '/history'
 
