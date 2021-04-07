@@ -93,7 +93,6 @@ def profileManagement():
             prof.city = form.city.data
             prof.state = form.state.data
             prof.zip = form.zipCode.data
-
         else:  # the profile of currentuser not exist     
             profileEntry = Profile(user_id = current_user.id, fullname = form.fullName.data, address1 = form.addressOne.data,
             address2 = form.addressTwo.data, city = form.city.data, state = form.state.data, zip = form.zipCode.data)
