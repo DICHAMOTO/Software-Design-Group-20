@@ -111,21 +111,18 @@ def profileManagement():
 def calculate_price(state, has_history, reuqest_gallons):
     current_price = 1.5
     company_profit = 0.1
-    margin = 1  # calculate the margin based on the state, history, gallons, etc
-    location_fact = 0.04 # initially outstate rate
-    history_fact = 0 # initially nohistory rate
-    gallon_fact = 0.03 # initially lessthan1000 rate
+    location_fact = 0.04  # initially outstate rate
+    history_fact = 0  # initially nohistory rate
+    gallon_fact = 0.03  # initially lessthan1000 rate
 
     if state is "Texas":
-        location_fact = 0.02 
+        location_fact = 0.02
     if has_history:
         history_fact = 0.01
-    if request_gallons > 1000:
+    if reuqest_gallons > 1000:
         gallon_fact = 0.02
 
     margin = current_price * (location_fact - history_fact + gallon_fact + company_profit)
-    print(str(margin))
-    
 
     return current_price + margin
 
