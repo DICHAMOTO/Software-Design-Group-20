@@ -112,7 +112,7 @@ class FuelQuoteForm(FlaskForm):
     # date = DateField('Delivery Date', format="%m/%d/%Y", validators=[DataRequired()])
     date = DateField('Delivery Date', format='%Y-%m-%d', validators=(validators.DataRequired(),))
     # acquire the suggested price from the pricing model here:
-    price = 0  # get the current price
+    price = 1.5  # get the base price
     # suggested_price = FloatField('Suggested Price', validators=[DataRequired()], default=price)
     # date = DateField('DatePicker', format='%Y-%m-%d')
     # Quote button
