@@ -140,7 +140,7 @@ def fuelquote():
     calculated_price = 0
     form = FuelQuoteForm()
     if request.method == 'POST':
-        if request.form['submit_button'] == 'Quote':
+        if request.form['submit_button'] == 'Update/Calculate Price':
             print("you press the calculate button!!!")
             gallons = form.gallons.data
             calculated_price = calculate_price(state, has_histry, gallons)
