@@ -115,7 +115,7 @@ def calculate_price(state, has_history, reuqest_gallons):
     history_fact = 0  # initially nohistory rate
     gallon_fact = 0.03  # initially lessthan1000 rate
 
-    if state is "Texas":
+    if state == "Texas":
         location_fact = 0.02
     if has_history:
         history_fact = 0.01
@@ -123,7 +123,6 @@ def calculate_price(state, has_history, reuqest_gallons):
         gallon_fact = 0.02
 
     margin = current_price * (location_fact - history_fact + gallon_fact + company_profit)
-
     return current_price + margin
 
 
