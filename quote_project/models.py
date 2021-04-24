@@ -38,7 +38,7 @@ class Profile(db.Model):
     quotes = db.relationship('Quote', backref='profile', lazy=True)
 
     def __repr__(self):
-        return f"Profile('{self.address1}', '{self.address2}', '{self.city}', '{self.state}', '{self.zip}')"
+        return f"Profile(fullname: '{self.fullname}', address1: '{self.address1}', address2: '{self.address2}', city: '{self.city}', state: '{self.state}', zipcode: '{self.zip}')"
 
 
 ### Quote TABLE ####
