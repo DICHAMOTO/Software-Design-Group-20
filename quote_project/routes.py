@@ -3,7 +3,6 @@ from quote_project.forms import RegistrationForm, LoginForm, AccountInfoForm, Fu
 from quote_project import app, db, bcrypt
 from quote_project.models import User, Quote, Profile
 from flask_login import current_user, login_required, login_user, logout_user
-import json
 
 
 # Method for the home page
@@ -83,9 +82,10 @@ def profileManagement():
         flash(f'{form.fullName.data} your account information has been successfully updated',
               'success')
 
-        exist = db.session.query(db.exists().where(Profile.user_id == current_user.id)).scalar() # check if this is exist in profile table
+        exist = db.session.query(
+            db.exists().where(Profile.user_id == current_user.id)).scalar()  # check if this is exist in profile table
 
-        if exist: #modify
+        if exist:  # modify
             prof = db.session.query(Profile).filter(Profile.user_id == current_user.id).first()
             prof.fullname = form.fullName.data
             prof.address1 = form.addressOne.data
@@ -95,8 +95,9 @@ def profileManagement():
             prof.zip = form.zipCode.data
 
         else:  # the profile of currentuser not exist     
-            profileEntry = Profile(user_id = current_user.id, fullname = form.fullName.data, address1 = form.addressOne.data,
-            address2 = form.addressTwo.data, city = form.city.data, state = form.state.data, zip = form.zipCode.data)
+            profileEntry = Profile(user_id=current_user.id, fullname=form.fullName.data, address1=form.addressOne.data,
+                                   address2=form.addressTwo.data, city=form.city.data, state=form.state.data,
+                                   zip=form.zipCode.data)
             print(profileEntry)
             # add row to db commitment
             db.session.add(profileEntry)
@@ -107,15 +108,34 @@ def profileManagement():
                            form=form)
 
 
+# declare the pricing function over here
+def calculate_price(state, has_history, reuqest_gallons):
+    current_price = 1.5
+    margin = 1  # calculate the margin based on the state, history, gallons, etc
+    return current_price + margin
+
+
 @app.route('/fuelquote', methods=['GET', 'POST'])
 @login_required
 def fuelquote():
+    # get the current user ID
+    user_id = current_user.id
+    # get the state of the user
+    state = Profile.query.filter_by(user_id=user_id).first().state
+    # check if user has any history
+    has_histry = Quote.query.filter_by(user_id=user_id).first() != None
+    gallons = 0
+    current_price = 1.5
+    calculated_price = 0
     form = FuelQuoteForm()
     if request.method == 'POST':
-        if request.form['submit_button'] == 'Calculate Total':
+        if request.form['submit_button'] == 'Quote':
             print("you press the calculate button!!!")
+            gallons = form.gallons.data
+            calculated_price = calculate_price(state, has_histry, gallons)
+            form.price = calculated_price
             return render_template('fuelquote.html', title='Fuel Quote', form=form)
-        elif request.form['submit_button'] == 'Quote':
+        elif request.form['submit_button'] == 'Submit':
             print("you press the quote button!!!")
             user_id = current_user.id
             profile_id = Profile.query.filter_by(user_id=user_id).first().id
@@ -127,7 +147,7 @@ def fuelquote():
                           user_id=user_id, total=total, profile_id=profile_id)
             db.session.add(quote)
             db.session.commit()
-            flash(f'Quote!',
+            flash(f'Submitted!',
                   'success')
     return render_template('fuelquote.html', title='Fuel Quote', form=form)
 
@@ -138,7 +158,7 @@ def display_history():
     numRow = Quote.query.count()
     quote_records = []
     # create empty dictionary:
-    for counter in range(1, numRow+1):
+    for counter in range(1, numRow + 1):
         client_name = Quote.query.filter_by(id=counter).first().profile.fullname
         gallons_requested = Quote.query.filter_by(id=counter).first().request_gallons
         delivery_address1 = Quote.query.filter_by(id=counter).first().profile.address1
