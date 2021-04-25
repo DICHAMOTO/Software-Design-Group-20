@@ -1,5 +1,19 @@
 {% extends "layout.html" %}
 {% block content %}
+<html>
+<head>
+    <title></title>
+    <style>
+        body
+        {
+        background-repeat: no-repeat;
+        background-attachment:fixed;
+        background-size:100% 100%;
+        background-image:url({{url_for('static', filename='images/login-page.jpg')}});
+        }
+    </style>
+</head>
+<body>
     <div class = "content-section">
         <form method = "POST" action = "">
             {{ form.hidden_tag() }}
@@ -45,15 +59,11 @@
             	<!-- Submittion button -->
                 {{ form.submit(class="btn btn-outline-info") }}
             </div>
-            <small class = "text-muted ml-2">
-                <a href="#">Forgot Password?</a>
+            <small class = "text-muted">
+                Don't Have An Account? <a class = "ml-2" href = "{{ url_for('register') }}">Sign Up!</a>
             </small>
         </form>
     </div>
-    <div class = "border-top pt-3">
-    	<!-- If user already has an account then redirect them to the login page -->
-        <small class = "text-muted">
-            Don't Have An Account? <a class = "ml-2" href = "{{ url_for('register') }}">Sign Up!</a>
-        </small>
-    </div>
+</body>
+</html>
 {% endblock content %}

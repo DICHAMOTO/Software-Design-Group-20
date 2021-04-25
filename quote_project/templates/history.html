@@ -1,26 +1,46 @@
 {% extends "layout.html" %}
 {% block content %}
-	<h1>History Page</h1>
-    <table>
-        <tr>
-          <th>Client Name</th>
-          <th>Gallons Requested</th>
-          <th>Delivery Address</th>
-          <th>Delivery Date</th>
-          <th>Suggested Price / Gallon</th>
-          <th>Total Amount Due</th>
-          <th>Quote Created Date</th>
-        </tr>
-        {% for history in histories %}
-            <tr>
-            <td>{{ history.client_name }}</td>
-            <td>{{ history.gallons_requested }}</td>
-            <td>{{ history.delivery_address }}</td>
-            <td>{{ history.delivery_date }}</td>
-            <td>{{ history.suggested_price }}</td>
-            <td>{{ history.total_amount }}</td>
-            <td>{{ history.quote_created }}</td>
-            </tr>
-        {% endfor %}
-      </table> 
+<html>
+<head>
+    <title></title>
+    <style>
+        body
+        {
+        background-repeat: no-repeat;
+        background-attachment:fixed;
+        background-size:100% 100%;
+        background-image:url({{url_for('static', filename='images/quote-history.jpg')}});
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+ <h1 class="text-white">Quote History</h1>
+ <table class="table table-dark">
+  <tr>
+    <th>Client Name</th>
+    <th>Gallons Requested</th>
+    <th>Delivery Address</th>
+    <th>Delivery Date</th>
+    <th>Suggested Price / Gallon</th>
+    <th>Total Amount Due</th>
+    <th>Quote Created Date</th>
+  </tr>
+    {% for history in histories %}
+    <tbody>
+    <tr>
+      <td>{{ history.client_name }}</td>
+      <td>{{ history.gallons_requested }}</td>
+      <td>{{ history.delivery_address }}</td>
+      <td>{{ history.delivery_date }}</td>
+      <td>{{ history.suggested_price }}</td>
+      <td>{{ history.total_amount }}</td>
+      <td>{{ history.quote_created }}</td>
+    </tr>
+  </tbody>
+    {% endfor %}
+</table> 
+</div>
+</body>
+</html>
 {% endblock content %}

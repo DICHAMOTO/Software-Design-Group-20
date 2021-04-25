@@ -1,5 +1,19 @@
 {% extends "layout.html" %}
 {% block content %}
+<html>
+<head>
+    <title></title>
+    <style>
+        body
+        {
+        background-repeat: no-repeat;
+        background-attachment:fixed;
+        background-size:100% 100%;
+        background-image:url({{url_for('static', filename='images/fuel-quote.jpg')}});
+        }
+    </style>
+</head>
+<body>
     <div class="content-section">
         <form method="POST" action="">
             {{ form.hidden_tag() }}
@@ -56,5 +70,6 @@
             </div>
         </form>
     </div>
-
+</body>
+</html>
 {% endblock content %}
