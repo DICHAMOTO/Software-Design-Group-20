@@ -11,10 +11,37 @@
 		background-size:100% 100%;
 		background-image:url({{url_for('static', filename='images/home-page.jpg')}});
 		}
+		h1 {display: flex;
+			justify-content: center;
+			color: white;
+			border-bottom-style: double;
+			margin-left: 100px;
+			margin-right: 100px;}
+		h2 {display: flex;
+			justify-content: center;
+			color: white;
+			border: 3px solid white;
+			border-style: outset;
+			border-radius: 5px;
+			background-color: lightgrey;
+			margin-left: 250px;
+			margin-right: 250px;}
+		p  {display: flex;
+			justify-content: center;
+			color: white;
+			text-align: center;
+			border-style: inset;
+			background-color: grey;
+			margin-left: 200px;
+			margin-right: 200px;}
 	</style>
 </head>
 <body>
-<h1 class="display-1 text-center text-white">Welcome</h1>
+<h1 class="display-1">Welcome</h1>
+<br><br><br>
+<h2>About</h2>
+<br>
+<p>This website was constructed by Brendan Morales, Aiden Takei, and Songwen Xue for the software design class taught at the University of Houston by Professor Raj Singh in the spring semester of 2021.<br><br>This website demonstrates the ability to register new users into a database, login and logout users, place order requests for fuel using a date picker and successfully calculate prices based on their location and order history, and to view previous orders placed by other users.</p>
 </body>
 </html>
 {% endblock content %}
