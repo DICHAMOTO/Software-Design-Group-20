@@ -24,7 +24,7 @@ class RegistrationForm(FlaskForm):
     # Otherwise, an error will pop up alerting the user that the passwords do 
     # not match.
     confirm_password = PasswordField('Confirm Password',
-                                     validators=[DataRequired(), EqualTo('password')])
+                                     validators=[DataRequired(), EqualTo('password', message="Passwords do not match!")])
     # A submittion field that will sign the user up
     submit = SubmitField('Sign Up')
 
@@ -71,7 +71,7 @@ class AccountInfoForm(FlaskForm):
     fullName = StringField('Full Name',
                            validators=[DataRequired(), Length(max=50)])
     # Have user  enter their addresss with a limit of 100 characters.
-    # This field is mandatory to fill out otherwise it will throw an error
+    # This field is mandatory to fill out otherwise it wField must be equal to passwordill throw an error
     addressOne = StringField('Address 1',
                              validators=[DataRequired(), Length(max=100)])
     # Have user  enter a second address with a limit of 100 characters

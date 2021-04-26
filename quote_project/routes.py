@@ -60,12 +60,19 @@ def login():
         # if form.username.data == 'moto' and form.password.data == 'testing':
         # flash(f'You have been logged in! Welcome {form.username.data}! Please complete your profile.', 'success')
         # return redirect(url_for('profileManagement'))
+        # check if user has ever update his/her profile
         user = User.query.filter_by(username=form.username.data).first()
         if user and bcrypt.check_password_hash(user.password, form.password.data):
+            user_id = User.query.filter_by(username=form.username.data).first().id
+            has_updated = Profile.query.filter_by(user_id=user_id).first() is not None
             login_user(user, remember=form.remember.data)
             next_page = request.args.get('next')
-            flash(f'Howdy {form.username.data}! Now redirecting you to finish your profile.', 'success')
-            return redirect(next_page) if next_page else redirect(url_for('profileManagement'))
+            if has_updated:
+                flash(f'Howdy {form.username.data}! Welcome back!', 'success')
+                return redirect(next_page) if next_page else redirect(url_for('home'))
+            else:
+                flash(f'Howdy {form.username.data}! Now redirecting you to finish your profile.', 'success')
+                return redirect(next_page) if next_page else redirect(url_for('profileManagement'))
         else:
             flash(f'Login Unsuccessful. Please check username or password.', 'danger')
     return render_template('login.html', title='Login', form=form)
@@ -76,10 +83,12 @@ def login():
 @login_required
 def profileManagement():
     # # Instantiate the account information form
+
     form = AccountInfoForm()
+
     # If all fields are correctly filled out, then flash success message
     if form.validate_on_submit():
-        flash(f'{form.fullName.data} your account information has been successfully updated',
+        flash(f'{form.fullName.data}, your account information has been successfully updated',
               'success')
 
         exist = db.session.query(
@@ -103,6 +112,7 @@ def profileManagement():
 
         # push to the db
         db.session.commit()
+
     return render_template('account.html', title="Profile Management",
                            form=form)
 
