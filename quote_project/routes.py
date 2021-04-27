@@ -152,35 +152,41 @@ def calculate_price(state, has_history, reuqest_gallons):
 def fuelquote():
     # get the current user ID
     user_id = current_user.id
-    # get the state of the user
-    state = Profile.query.filter_by(user_id=user_id).first().state
-    # check if user has any history
-    has_histry = Quote.query.filter_by(user_id=user_id).first() != None
-    gallons = 0
-    current_price = 1.5
-    calculated_price = 0
-    form = FuelQuoteForm()
-    if request.method == 'POST':
-        if request.form['submit_button'] == 'Update/Calculate Price':
-            print("you press the calculate button!!!")
-            gallons = form.gallons.data
-            calculated_price = calculate_price(state, has_histry, gallons)
-            form.price = calculated_price
-            return render_template('fuelquote.html', title='Fuel Quote', form=form)
-        elif request.form['submit_button'] == 'Submit':
-            print("you press the quote button!!!")
-            user_id = current_user.id
-            profile_id = Profile.query.filter_by(user_id=user_id).first().id
-            delivery_date = form.date.data
-            request_gallons = form.gallons.data
-            suggested_price = form.price
-            total = request_gallons * suggested_price
-            quote = Quote(delivery_date=delivery_date, request_gallons=request_gallons, suggested_price=suggested_price,
-                          user_id=user_id, total=total, profile_id=profile_id)
-            db.session.add(quote)
-            db.session.commit()
-            flash(f'Submitted!',
-                  'success')
+    has_profile = Profile.query.filter_by(user_id=current_user.id).first() != None
+    if has_profile:
+        # get the state of the user
+        state = Profile.query.filter_by(user_id=user_id).first().state
+        # check if user has any history
+        has_histry = Quote.query.filter_by(user_id=user_id).first() != None
+        gallons = 0
+        current_price = 1.5
+        calculated_price = 0
+        form = FuelQuoteForm()
+        if request.method == 'POST':
+            if request.form['submit_button'] == 'Update/Calculate Price':
+                print("you press the calculate button!!!")
+                gallons = form.gallons.data
+                calculated_price = calculate_price(state, has_histry, gallons)
+                form.price = calculated_price
+                return render_template('fuelquote.html', title='Fuel Quote', form=form)
+            elif request.form['submit_button'] == 'Submit':
+                print("you press the quote button!!!")
+                user_id = current_user.id
+                profile_id = Profile.query.filter_by(user_id=user_id).first().id
+                delivery_date = form.date.data
+                request_gallons = form.gallons.data
+                suggested_price = form.price
+                total = request_gallons * suggested_price
+                quote = Quote(delivery_date=delivery_date, request_gallons=request_gallons, suggested_price=suggested_price,
+                              user_id=user_id, total=total, profile_id=profile_id)
+                db.session.add(quote)
+                db.session.commit()
+                flash(f'Submitted!',
+                      'success')
+    else:
+        flash(f'Please update your profile first!',
+              'danger')
+        form = FuelQuoteForm()
     return render_template('fuelquote.html', title='Fuel Quote', form=form)
 
 
