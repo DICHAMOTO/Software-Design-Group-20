@@ -93,8 +93,10 @@ def profileManagement():
         state = Profile.query.filter_by(user_id=current_user.id).first().state
         zipCode = Profile.query.filter_by(user_id=current_user.id).first().zip
 
-    form = AccountInfoForm(fullName=fullName, addressOne=addressOne, addressTwo=addressTwo, city=city, state=state,
-                           zipCode=zipCode)
+        form = AccountInfoForm(fullName=fullName, addressOne=addressOne, addressTwo=addressTwo, city=city, state=state,
+                               zipCode=zipCode)
+    else:
+        form = AccountInfoForm(fullName=fullName)
     # If all fields are correctly filled out, then flash success message
     if form.validate_on_submit():
         flash(f'{form.fullName.data}, your account information has been successfully updated',
