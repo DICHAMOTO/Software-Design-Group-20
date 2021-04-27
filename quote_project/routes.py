@@ -83,9 +83,18 @@ def login():
 @login_required
 def profileManagement():
     # # Instantiate the account information form
+    # collect current user info
+    fullName = current_user.username
+    has_profile = Profile.query.filter_by(user_id=current_user.id).first() != None
+    if has_profile:
+        addressOne = Profile.query.filter_by(user_id=current_user.id).first().address1
+        addressTwo = Profile.query.filter_by(user_id=current_user.id).first().address2
+        city = Profile.query.filter_by(user_id=current_user.id).first().city
+        state = Profile.query.filter_by(user_id=current_user.id).first().state
+        zipCode = Profile.query.filter_by(user_id=current_user.id).first().zip
 
-    form = AccountInfoForm()
-
+    form = AccountInfoForm(fullName=fullName, addressOne=addressOne, addressTwo=addressTwo, city=city, state=state,
+                           zipCode=zipCode)
     # If all fields are correctly filled out, then flash success message
     if form.validate_on_submit():
         flash(f'{form.fullName.data}, your account information has been successfully updated',
