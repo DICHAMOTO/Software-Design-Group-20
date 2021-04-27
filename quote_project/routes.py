@@ -174,37 +174,64 @@ def fuelquote():
 
 
 @app.route("/history")
+@login_required
 def display_history():
     # count the # of row in Quote table:
-    numRow = Quote.query.count()
     quote_records = []
-    # create empty dictionary:
-    for counter in range(1, numRow + 1):
-        client_name = Quote.query.filter_by(id=counter).first().profile.fullname
-        gallons_requested = Quote.query.filter_by(id=counter).first().request_gallons
-        delivery_address1 = Quote.query.filter_by(id=counter).first().profile.address1
-        delivery_address2 = Quote.query.filter_by(id=counter).first().profile.address2
-        if delivery_address2 is None:
-            delivery_address2 = ""
-        zipcode = Quote.query.filter_by(id=counter).first().profile.zip
-        city = Quote.query.filter_by(id=counter).first().profile.city
-        state = Quote.query.filter_by(id=counter).first().profile.state
-        # concate address:
-        delivery_address = f'{delivery_address1} {delivery_address2}, {city}, {state}, {zipcode}'
-        delivery_date = Quote.query.filter_by(id=counter).first().delivery_date
-        suggested_price = Quote.query.filter_by(id=counter).first().suggested_price
-        total_amount = Quote.query.filter_by(id=counter).first().total
-        quote_created = Quote.query.filter_by(id=counter).first().date_quoted
-        temp_dict = {'client_name': client_name,
-                     'gallons_requested': gallons_requested,
-                     'delivery_address': delivery_address,
-                     'delivery_date': delivery_date,
-                     'suggested_price': f'${suggested_price}',
-                     'total_amount': f'${total_amount}',
-                     'quote_created': quote_created
-                     }
-        quote_records.append(temp_dict)
-    print(quote_records)
+    if current_user.username == "admin":
+        numRow = Quote.query.count()
+        # create empty dictionary:
+        for counter in range(1, numRow + 1):
+            client_name = Quote.query.filter_by(id=counter).first().profile.fullname
+            gallons_requested = Quote.query.filter_by(id=counter).first().request_gallons
+            delivery_address1 = Quote.query.filter_by(id=counter).first().profile.address1
+            delivery_address2 = Quote.query.filter_by(id=counter).first().profile.address2
+            if delivery_address2 is None:
+                delivery_address2 = ""
+            zipcode = Quote.query.filter_by(id=counter).first().profile.zip
+            city = Quote.query.filter_by(id=counter).first().profile.city
+            state = Quote.query.filter_by(id=counter).first().profile.state
+            # concate address:
+            delivery_address = f'{delivery_address1} {delivery_address2}, {city}, {state}, {zipcode}'
+            delivery_date = Quote.query.filter_by(id=counter).first().delivery_date
+            suggested_price = Quote.query.filter_by(id=counter).first().suggested_price
+            total_amount = Quote.query.filter_by(id=counter).first().total
+            quote_created = Quote.query.filter_by(id=counter).first().date_quoted
+            temp_dict = {'client_name': client_name,
+                         'gallons_requested': gallons_requested,
+                         'delivery_address': delivery_address,
+                         'delivery_date': delivery_date,
+                         'suggested_price': f'${suggested_price}',
+                         'total_amount': f'${total_amount}',
+                         'quote_created': quote_created
+                         }
+            quote_records.append(temp_dict)
+    else:
+        quotes = Quote.query.filter_by(user_id=current_user.id).all()
+        for quote in quotes:
+            client_name = quote.profile.fullname
+            gallons_requested = quote.request_gallons
+            delivery_address1 = quote.profile.address1
+            delivery_address2 = quote.profile.address2
+            if delivery_address2 is None:
+                delivery_address2 = ""
+            zipcode = quote.profile.zip
+            city = quote.profile.city
+            state = quote.profile.state
+            delivery_address = f'{delivery_address1} {delivery_address2}, {city}, {state}, {zipcode}'
+            delivery_date = quote.delivery_date
+            suggested_price = quote.suggested_price
+            total_amount = quote.total
+            quote_created = quote.date_quoted
+            temp_dict = {'client_name': client_name,
+                         'gallons_requested': gallons_requested,
+                         'delivery_address': delivery_address,
+                         'delivery_date': delivery_date,
+                         'suggested_price': f'${suggested_price}',
+                         'total_amount': f'${total_amount}',
+                         'quote_created': quote_created
+                         }
+            quote_records.append(temp_dict)
     return render_template('history.html', title='History', histories=quote_records)
 
 
