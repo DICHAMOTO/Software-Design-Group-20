@@ -5,7 +5,7 @@
 [comment]: <> (# If you do not have either installed on your machine be sure to visit https://www.python.org/ and install the latest version.)
 
 [comment]: <> (# Once you have installed Python on your machine, be sure to run 'pip install flask' on your command line to install flask.)
-# Create a copy of the directory by typing in git bash 'git clone https://github.com/JustCallMeMoto/Software-Design-Group-20.git' then work your way to the directory and type cd 'software-design-group-20'
+# Create a copy of the directory by typing in git bash 'git clone https://github.com/bmoprogrammer/Software-Design-Group-20.git' then work your way to the directory and type cd 'software-design-group-20'
 # To run the website locally, run the following commands in the terminal:
 1. ***pip install -r reuqirements.txt***
 2. ***python run.py***
